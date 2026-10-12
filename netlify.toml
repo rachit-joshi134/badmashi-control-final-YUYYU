@@ -10,6 +10,13 @@
   to = "/.netlify/functions/:splat"
   status = 200
 
+# Fallback until the NextLayer hub page (public/index.html) is added; not forced,
+# so it stops applying automatically once that file exists.
+[[redirects]]
+  from = "/"
+  to = "/isro/"
+  status = 302
+
 [[redirects]]
   from = "/isro/*"
   to = "/isro/index.html"
