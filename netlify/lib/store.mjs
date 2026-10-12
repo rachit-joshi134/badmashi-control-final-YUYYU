@@ -40,3 +40,10 @@ export async function checkAdmin(email,password){
  return bcrypt.compare(password,hash);
 }
 export function newId(prefix){return `${prefix}-${new Date().getFullYear()}-${crypto.randomBytes(3).toString("hex").toUpperCase()}`;}
+// Runs an event-style handler ({path,httpMethod,headers,body} -> {statusCode,headers,body}) as a modern Netlify Function.
+export const adapt=handle=>async req=>{
+ const url=new URL(req.url);
+ const event={path:url.pathname,httpMethod:req.method,headers:Object.fromEntries(req.headers),queryStringParameters:Object.fromEntries(url.searchParams),body:["GET","HEAD"].includes(req.method)?null:await req.text()};
+ const r=await handle(event);
+ return new Response(r.body,{status:r.statusCode,headers:r.headers});
+};

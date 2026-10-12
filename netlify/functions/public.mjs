@@ -1,5 +1,5 @@
-import {getRecords,json,safeDriver,bodyOf,newId} from "./_store.mjs";
-export default async (event)=>{
+import {getRecords,json,safeDriver,bodyOf,newId,adapt} from "../lib/store.mjs";
+const handle=async (event)=>{
  const path=event.path||"";
  const method=event.httpMethod;
  const records=await getRecords();
@@ -28,3 +28,4 @@ export default async (event)=>{
  }
  return json(404,{error:"API route not found."});
 };
+export default adapt(handle);

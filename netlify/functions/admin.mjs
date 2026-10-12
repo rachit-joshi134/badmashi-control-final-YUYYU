@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import {getRecords,json,safeDriver,bodyOf,authorized,audit,checkAdmin,newId} from "./_store.mjs";
-export default async (event)=>{
+import {getRecords,json,safeDriver,bodyOf,authorized,audit,checkAdmin,newId,adapt} from "../lib/store.mjs";
+const handle=async (event)=>{
  const path=event.path||"",method=event.httpMethod;
  if(method==="POST"&&path.endsWith("/login")){
   const b=bodyOf(event);if(!b||typeof b.email!=="string"||typeof b.password!=="string")return json(400,{error:"Email and password required."});
@@ -60,3 +60,4 @@ export default async (event)=>{
  return json(404,{error:"Admin API route not found."});
 };
 function counts(items,key){const out={};for(const x of items)out[x[key]]=(out[x[key]]||0)+1;return out;}
+export default adapt(handle);
